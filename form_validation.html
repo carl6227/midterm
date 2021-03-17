@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row" style="margin-top: 300px;">
+            <div class="col-sm">
+                <img src="undraw_Profile_data_re_v81r.png" style="width: 100%;" alt="">
+            </div>
+            <div class="col-sm">
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+
+                            <input type="text" class="form-control" id="firstname" placeholder="Firstname">
+
+                            <br>
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email">
+                            <br>
+                            <input type="text" class="form-control" id="password" placeholder="Password">
+                            <br>
+                            <label for="exampleInputEmail1">Birthdate</label>
+                            <input type="date" class="form-control" id="birthdate" placeholder="mm/dd/yyyy">
+                        </div>
+                    </div>
+                    <div class="col-sm">
+
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="lastname" aria-describedby="emailHelp"
+                                placeholder="Lastname">
+
+                            <br><br><br><br><br>
+                            <input type="text" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+                            <br>
+                            <label for="exampleInputEmail1">Phone</label>
+                            <input type="text" class="form-control" id="phone" placeholder="Phone Number (PH)">
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <form>
+
+                    <button type="button" id="btnCreate" class="btn btn-primary" data-toggle="modal"
+                        data-target="#exampleModalCenter">
+                        Create Account
+                    </button>
+
+                </form>
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Result</h5>
+                                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" id="content">
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+
+            $("#btnCreate").on("click", () => {
+                ifOk = true;
+                paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,100}$/;
+                letters = /^[A-Za-z]+$/;
+                fname = $("#firstname").val();
+                lname = $("#lastname").val();
+                mail = $("#email").val();
+                pass1 = $("#password").val();
+                pass2 = $("#confirmPassword").val()
+                age = new Date().getFullYear() - $("#birthdate").val().substr(0, 4);
+                phoneNumber = $("#phone").val();
+                if (fname.match(letters) == null || lname.match(letters) == null) {
+                    $("#content").prepend(document.createElement("p").innerText =
+                        "Please enter a valid name.");
+                    ifOk = false;
+                }
+                if (mail.substr(-2) != "ph" && mail.substr(-3) != "net" && mail.substr(-3) !=
+                    "org" && mail.substr(-3) != "com" || mail[0] == "@" || mail.indexOf("@") <= 0 ||
+                    mail[0] == "." || mail[mail.indexOf("@") + 1] == "." || mail[mail.indexOf("@") -
+                        1] == ".") {
+                    $("#content").append(document.createElement("br"));
+                    $("#content").append(document.createElement("p").innerText =
+                        "Please enter a valid email.");
+                    ifOk = false;
+                }
+                if (pass1.match(paswd) == null) {
+                    $("#content").append(document.createElement("br"));
+                    $("#content").append(document.createElement("p").innerText =
+                        "Your password must have 8 characters or more, and contain at least one special character, number, uppercase letter, and lowercase letter."
+                        );
+
+                    ifOk = false;
+                }
+                if (pass1 != pass2) {
+                    $("#content").append(document.createElement("br"));
+                    $("#content").append(document.createElement("p").innerText =
+                        "Your passwords do not match. Please try again");
+                    ifOk = false;
+                }
+
+                if (age < 18) {
+                    $("#content").append(document.createElement("br"));
+                    $("#content").append(document.createElement("p").innerText =
+                        "You must be 18 years old and above to create an account.");
+                    ifOk = false;
+                }
+                if (Number.isInteger(phoneNumber.substr(1)) == false && phoneNumber.substr(0, 3) !=
+                    "+63" && phoneNumber.length != 13) {
+                    $("#content").append(document.createElement("br"));
+                    $("#content").append(document.createElement("p").innerText =
+                        "Please enter a valid phone number");
+                    $("#content").append(document.createElement("br"));
+                    $("#content").append(document.createElement("p").innerText =
+                        "Your phone number is not on PH origin. Accounts are exclusive for Philippine users only"
+                    );
+                    ifOk = false;
+                }
+                if (ifOk == true) {
+                    $("#content").append(document.createElement("p").innerText = "Account Created");
+                    $("#content").append(document.createElement("br"));
+                }
+            })
+        })
+
+        $("#btnCreate").on("click", () => {
+            $("#content").empty()
+        });
+    </script>
+
+</body>
+
+</html>
